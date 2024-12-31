@@ -8,7 +8,17 @@ langchain-community
 langchain-experimental
 langchain-openai
 langchain-groq
-groq
-pinecone[grpc]
+pinecone-client
+torchvision 
+torchaudio
+pinecone
 
--e .
+
+
+
+groq
+pinecone
+tensorflow
+transformers
+tf-keras
+torch
