@@ -5,12 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Chatbot</title>
     <!-- Bootstrap CSS -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLR9/DgoX7pa0ksFowf19FG4q3E54u00fqOFLlT7Zj"
-        crossorigin="anonymous"
-    >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLR9/DgoX7pa0ksFowf19FG4q3E54u00fqOFLlT7Zj" crossorigin="anonymous">
+    <!-- FontAwesome Icons for user/bot -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             background-color: #f4f5f7;
@@ -40,23 +37,49 @@
             background: #f9f9f9;
         }
         .message {
+            display: flex;
+            align-items: center;
             margin-bottom: 15px;
             padding: 10px;
             border-radius: 8px;
-            max-width: 75%;
-            word-wrap: break-word;
         }
         .message.user {
-            text-align: right;
-            background: #f0f0f0;
-            color: #333;
-            align-self: flex-end;
+            justify-content: flex-end;
         }
         .message.bot {
-            text-align: left;
-            background: #e0d4f7;
+            justify-content: flex-start;
+        }
+        .icon {
+            margin-right: 15px;
+            font-size: 30px;
+            width: 50px; /* Icon size */
+            height: 50px;
+            border-radius: 50%; /* Circular icon */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .message.user .icon {
+            background-color: #f0f0f0; /* Grey background for user */
+            color: #333;
+        }
+        .message.bot .icon {
+            background-color: #e0d4f7; /* Purple background for bot */
             color: #4a0072;
-            align-self: flex-start;
+        }
+        .content {
+            max-width: 70%;
+            word-wrap: break-word;
+            padding: 10px;
+        }
+        .message.user .content {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        .message.bot .content {
+            background-color: #e0d4f7;
+            color: #4a0072;
         }
         .input-group {
             margin-top: 20px;
@@ -89,12 +112,7 @@
         <!-- Messages will appear here -->
     </div>
     <div class="input-group">
-        <input
-            type="text"
-            id="userMessage"
-            class="form-control"
-            placeholder="Type your message here..."
-        >
+        <input type="text" id="userMessage" class="form-control" placeholder="Type your message here...">
         <button class="btn" id="sendMessage">Send</button>
     </div>
 </div>
@@ -110,7 +128,12 @@
         // Display user's message
         const userMsgDiv = document.createElement('div');
         userMsgDiv.className = 'message user';
-        userMsgDiv.textContent = userMessage;
+        userMsgDiv.innerHTML = `
+            <div class="icon">
+                <i class="fa fa-user"></i> <!-- Your user icon -->
+            </div>
+            <span class="content"> ${userMessage}</span>
+        `;
         messageBox.appendChild(userMsgDiv);
 
         // Scroll to bottom
@@ -132,26 +155,37 @@
             // Display bot's response
             const botMsgDiv = document.createElement('div');
             botMsgDiv.className = 'message bot';
-            botMsgDiv.textContent = result.response || "Sorry, I couldn't process that.";
+            botMsgDiv.innerHTML = `
+                <div class="icon">
+                    <i class="fa fa-robot"></i> <!-- Your bot icon -->
+                </div>
+                <span class="content">${result.response || "Sorry, I couldn't process that."}</span>
+            `;
             messageBox.appendChild(botMsgDiv);
 
             // Scroll to bottom
             messageBox.scrollTop = messageBox.scrollHeight;
         } catch (error) {
             console.error('Error:', error);
+
+            // Display error message
             const errorMsgDiv = document.createElement('div');
             errorMsgDiv.className = 'message bot';
-            errorMsgDiv.textContent = "An error occurred. Please try again later.";
+            errorMsgDiv.innerHTML = `
+                <div class="icon">
+                    <i class="fa fa-exclamation-triangle"></i> <!-- Error icon -->
+                </div>
+                <span class="content">An error occurred. Please try again later.</span>
+            `;
             messageBox.appendChild(errorMsgDiv);
+
+            // Scroll to bottom
+            messageBox.scrollTop = messageBox.scrollHeight;
         }
     });
 </script>
 
 <!-- Bootstrap JS -->
-<script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-w76A1CU+x5Fx3fYACq6YH++8e1QBo0Ig6h6s3yy8pg6ik5yI1Nw+PxhgfN6V7gNf"
-    crossorigin="anonymous"
-></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76A1CU+x5Fx3fYACq6YH++8e1QBo0Ig6h6s3yy8pg6ik5yI1Nw+PxhgfN6V7gNf" crossorigin="anonymous"></script>
 </body>
 </html>
